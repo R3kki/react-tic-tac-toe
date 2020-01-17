@@ -52,6 +52,7 @@ function Square (props) {
           }],
           stepNumber: 0,
           xIsNext: true,
+          ascendingOrder: true,
       };
     }
     handleClick(i) {
@@ -77,12 +78,15 @@ function Square (props) {
           xIsNext: (step % 2) === 0,
       });
     }
+    sortClick(i){
+      this.setState({ascendingOrder: !this.state.ascendingOrder,});
+    }
     render() {
       const history = this.state.history;
       const current = history[this.state.stepNumber];
       const winner = calculateWinner(current.squares);
 
-      const moves = history.map((step, move) => {
+      var moves = history.map((step, move) => {
         const desc = move ?
           'Go to move #' + move + ' @ ' + calculateLocation(history[move].location):
           'Go to game start';
@@ -102,6 +106,15 @@ function Square (props) {
           status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
       }
 
+      const order = this.state.ascendingOrder;
+      let sort;
+      if (order){
+        sort = 'Chronological Order';
+      } else{
+        sort = 'Reverse Chronological Order';
+        moves = moves.reverse();
+      }
+      
       return (
         <div className="game">
           <div className="game-board">
@@ -112,6 +125,7 @@ function Square (props) {
           </div>
           <div className="game-info">
             <div>{status}</div>
+            <button onClick={(i) => this.sortClick(i)}>{sort}</button>
             <ol>{moves}</ol>
           </div>
         </div>
