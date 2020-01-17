@@ -73,3 +73,10 @@ body {
     margin-left: 20px;
   }
   
+  .current-move {
+    font-weight: bold;
+  }
+
+  .old-move {
+      font-weight: normal;
+  }

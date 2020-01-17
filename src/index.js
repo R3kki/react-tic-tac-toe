@@ -21,32 +21,49 @@ function Square (props) {
     }
   
     render() {
+      const cells = [];
+      for (let row = 0; row < 9; row=row+3){
+        let rows = [];
+        for (let col = 0; col < 3; col++){
+          rows.push(this.renderSquare(row + col));
+        }
+        cells.push(<div className="board-row" key={row + 'ID'}>{cells}</div>);
+      }
       return (
         <div>
-          <div className="board-header-top">{'C'}</div>
-          <div className="board-header-top">{'B'}</div>
-          <div className="board-header-top">{'A'}</div>
-          <div className="board-row">
-            <div className="board-header-side">{'1'}</div>
-            {this.renderSquare(0)}
-            {this.renderSquare(1)}
-            {this.renderSquare(2)}
-          </div>
-          <div className="board-row">
-            <div className="board-header-side">{'2'}</div>
-            {this.renderSquare(3)}
-            {this.renderSquare(4)}
-            {this.renderSquare(5)}
-          </div>
-          <div className="board-row">
-            <div className="board-header-side">{'3'}</div>
-            {this.renderSquare(6)}
-            {this.renderSquare(7)}
-            {this.renderSquare(8)}
-          </div>
+          {cells}
         </div>
       );
-    }
+    }    
+
+    // render() {
+    //   return (
+    //     <div>
+    //       <div className="board-header-top">{'C'}</div>
+    //       <div className="board-header-top">{'B'}</div>
+    //       <div className="board-header-top">{'A'}</div>
+    //       <div className="board-row">
+    //         <div className="board-header-side">{'1'}</div>
+    //         {this.renderSquare(0)}
+    //         {this.renderSquare(1)}
+    //         {this.renderSquare(2)}
+    //       </div>
+    //       <div className="board-row">
+    //         <div className="board-header-side">{'2'}</div>
+    //         {this.renderSquare(3)}
+    //         {this.renderSquare(4)}
+    //         {this.renderSquare(5)}
+    //       </div>
+    //       <div className="board-row">
+    //         <div className="board-header-side">{'3'}</div>
+    //         {this.renderSquare(6)}
+    //         {this.renderSquare(7)}
+    //         {this.renderSquare(8)}
+    //       </div>
+    //     </div>
+    //   );
+    // }
+
   }
   
   class Game extends React.Component {
@@ -88,15 +105,16 @@ function Square (props) {
       const history = this.state.history;
       const current = history[this.state.stepNumber];
       const winner = calculateWinner(current.squares);
-    //   const location = ;
 
       const moves = history.map((step, move) => {
         const desc = move ?
-          'Go to move #' + move + ' ' + calculateLocation(history[move].location):
+          'Go to move #' + move + ' @ ' + calculateLocation(history[move].location):
           'Go to game start';
         return (
-          <li  key={move}>
-            <button onClick={() => this.jumpTo(move)}>{desc}</button>
+          <li key={move}>
+            <button 
+              className={move == history.length-1 ? "current-move": "old-move" } 
+              onClick={() => this.jumpTo(move)}>{desc}</button>
           </li>
         );
       });
