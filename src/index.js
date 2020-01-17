@@ -4,7 +4,9 @@ import './index.css';
 
 function Square (props) {
     return (
-    <button className="square" onClick={props.onClick}>
+    <button 
+      className={props.highlight}
+      onClick={props.onClick}>
         {props.value}
     </button>
     );
@@ -17,6 +19,9 @@ function Square (props) {
           value={this.props.squares[i]}
           onClick={() => this.props.onClick(i)}
           key={i+'_squareID'}
+          highlight={
+            (this.props.won[0] === i || this.props.won[1] === i || this.props.won[2] === i) 
+            ? "square winning-square" : "square"}
         />
       );
     }
@@ -59,8 +64,9 @@ function Square (props) {
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1]
         const square_clicked = current.squares.slice();
-        if (calculateWinner(square_clicked || square_clicked[i])) {
-            return;
+        const ws = calculateWinner(square_clicked || square_clicked[i]);
+        if (ws[0] !== -1) {
+          return;
         }
         square_clicked[i] = this.state.xIsNext ? 'X' : 'O';
         this.setState({
@@ -100,8 +106,9 @@ function Square (props) {
       });
 
       let status;
-      if (winner) {
-          status = 'Winner: ' + winner;
+      if (winner[0] !== -1) {
+          status = 'Winner: ' + winner[0];
+
       } else {
           status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
       }
@@ -121,6 +128,7 @@ function Square (props) {
             <Board 
               squares={current.squares}
               onClick={(i) => this.handleClick(i)}
+              won={winner.slice(1,4)}
             />
           </div>
           <div className="game-info">
@@ -155,10 +163,10 @@ function Square (props) {
     for (let i = 0; i < lines.length; i++) {
       const [a, b, c] = lines[i];
       if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-        return squares[a];
+        return [squares[a], a, b, c];
       }
     }
-    return null;
+    return [-1, -1, -1, -1];
   }
   
   function calculateLocation(square_number) {
