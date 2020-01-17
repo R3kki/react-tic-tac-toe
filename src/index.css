@@ -57,7 +57,7 @@ body {
   }
   
   .winning-square {
-    background: rgb(224, 221, 15);
+    background: rgb(255, 251, 0);
   }
 
   .square:focus {

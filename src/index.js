@@ -108,7 +108,8 @@ function Square (props) {
       let status;
       if (winner[0] !== -1) {
           status = 'Winner: ' + winner[0];
-
+      } else if (moves.length === 10){
+          status = 'Draw';
       } else {
           status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
       }
