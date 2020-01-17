@@ -16,18 +16,23 @@ function Square (props) {
         <Square 
           value={this.props.squares[i]}
           onClick={() => this.props.onClick(i)}
+          key={i+'_squareID'}
         />
       );
     }
   
     render() {
       const cells = [];
-      for (let row = 0; row < 9; row=row+3){
+      cells.push(<div className="board-header-top" key={'C'}>{'C'}</div>)
+      cells.push(<div className="board-header-top" key={'B'}>{'B'}</div>)
+      cells.push(<div className="board-header-top" key={'A'}>{'A'}</div>)
+      for (let row = 0; row < 3; row++){
         let rows = [];
+        rows.push(<div className="board-header-side" key={row+'_hSideID'}>{row+1}</div>)
         for (let col = 0; col < 3; col++){
-          rows.push(this.renderSquare(row + col));
+          rows.push(this.renderSquare(3*row + col));
         }
-        cells.push(<div className="board-row" key={row + 'ID'}>{cells}</div>);
+        cells.push(<div className="board-row" key={row + '_cellID'}>{rows}</div>);
       }
       return (
         <div>
@@ -35,35 +40,6 @@ function Square (props) {
         </div>
       );
     }    
-
-    // render() {
-    //   return (
-    //     <div>
-    //       <div className="board-header-top">{'C'}</div>
-    //       <div className="board-header-top">{'B'}</div>
-    //       <div className="board-header-top">{'A'}</div>
-    //       <div className="board-row">
-    //         <div className="board-header-side">{'1'}</div>
-    //         {this.renderSquare(0)}
-    //         {this.renderSquare(1)}
-    //         {this.renderSquare(2)}
-    //       </div>
-    //       <div className="board-row">
-    //         <div className="board-header-side">{'2'}</div>
-    //         {this.renderSquare(3)}
-    //         {this.renderSquare(4)}
-    //         {this.renderSquare(5)}
-    //       </div>
-    //       <div className="board-row">
-    //         <div className="board-header-side">{'3'}</div>
-    //         {this.renderSquare(6)}
-    //         {this.renderSquare(7)}
-    //         {this.renderSquare(8)}
-    //       </div>
-    //     </div>
-    //   );
-    // }
-
   }
   
   class Game extends React.Component {
@@ -113,7 +89,7 @@ function Square (props) {
         return (
           <li key={move}>
             <button 
-              className={move == history.length-1 ? "current-move": "old-move" } 
+              className={move === history.length-1 ? "current-move": "old-move" } 
               onClick={() => this.jumpTo(move)}>{desc}</button>
           </li>
         );
@@ -181,9 +157,9 @@ function Square (props) {
         location = '3';
     }
 
-    if (square_number % 3 == 0){
+    if (square_number % 3 === 0){
         location = 'A' + location
-    } else if (square_number % 3 == 1) {
+    } else if (square_number % 3 === 1) {
     location = 'B' + location
     } else {
     location = 'C' + location
